@@ -1,679 +1,176 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[
-]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{iftex}
-\ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{hyperref}
 
-\author{}
-\date{}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \begin{document}
 
-\hypertarget{benchmarking-modern-vision-transformers-against-selective-state-space-models-for-remote-sensing-hyperspectral-image-classification}{%
-\section{Benchmarking Modern Vision Transformers against Selective State
-Space Models for Remote Sensing Hyperspectral Image
-Classification}\label{benchmarking-modern-vision-transformers-against-selective-state-space-models-for-remote-sensing-hyperspectral-image-classification}}
+\title{Benchmarking Modern Vision Transformers against Selective State Space Models for Remote Sensing Hyperspectral Classification\\
+{\footnotesize \textsuperscript{*}A Minor Project Report --- Academic Year 2025--2026}
+}
 
-\textbf{A Minor Project Report}\\
-\emph{Submitted in partial fulfillment of the requirements for the
-Degree of Bachelor of Technology in Information Technology}
+\author{
+    \IEEEauthorblockN{Prince Prajapati}
+    \IEEEauthorblockA{\textit{Dept. of Information Technology} \\
+    Roll No: 24124085}
+    \and
+    \IEEEauthorblockN{Ayush Bansal}
+    \IEEEauthorblockA{\textit{Dept. of Information Technology} \\
+    Roll No: 24124025}
+    \and
+    \IEEEauthorblockN{Abhay Kaushal}
+    \IEEEauthorblockA{\textit{Dept. of Information Technology} \\
+    Roll No: 24124003}
+    \and
+    \IEEEauthorblockN{Dr. Nitika Nigam}
+    \IEEEauthorblockA{\textit{Project Supervisor / Guide} \\
+    \textit{Dept. of Information Technology}}
+}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\maketitle
 
-\hypertarget{project-team}{%
-\subsubsection{\texorpdfstring{\textbf{Project
-Team}}{Project Team}}\label{project-team}}
+\begin{abstract}
+Hyperspectral Image (HSI) classification poses significant computational and structural challenges due to the combination of high-dimensional spectral signatures, high spatial correlation, and severe training sample scarcity (the few-shot regime). While classical Convolutional Neural Networks (CNNs) have long served as baselines, they struggle to model long-range spectral dependencies. Recent years witnessed the rise of Vision Transformers (ViTs); however, their quadratic self-attention complexity $\mathcal{O}(N^2)$ presents severe memory bottlenecks on multi-spectral scenes. The year 2026 marks a paradigm shift with the introduction of cutting-edge Macro-Micro Vision Transformers (\texttt{MMFormer}) and Route-Reliability State Space Models (\texttt{R2Mamba}). In this work, we conduct a rigorous head-to-head empirical benchmark comparing \texttt{MMFormer} (\textit{IEEE TGRS 2026}) and \texttt{R2Mamba} (\textit{IEEE JSTARS 2026}) under an identical experimental protocol across two premier benchmarks: Indian Pines (NASA AVIRIS) and Pavia University (DLR ROSIS). Evaluated over three independent seeded runs to guarantee statistical reproducibility, our empirical results demonstrate that \texttt{R2Mamba} significantly outperforms \texttt{MMFormer}. On Indian Pines (16 classes), \texttt{R2Mamba} achieves $83.89\% \pm 1.66\%$ Overall Accuracy (OA) vs. $76.41\% \pm 3.84\%$ for \texttt{MMFormer} ($+7.48\%$ gain), while executing $2.9\times$ faster ($\sim$26s vs. $\sim$75s per run). On Pavia University (9 classes), \texttt{R2Mamba} attains $97.59\% \pm 0.60\%$ OA (peak $98.03\%$) compared to $92.45\% \pm 5.98\%$ for \texttt{MMFormer} ($+5.14\%$ gain), with $10\times$ lower variance and a $3.5\times$ training speedup ($\sim$40s vs. $\sim$140s per run). These findings confirm that selective State Space Models with linear complexity $\mathcal{O}(N)$ provide superior discriminative capability, convergence stability, and computational scalability over attention-based transformers in small-sample remote sensing domains.
+\end{abstract}
 
+\begin{IEEEkeywords}
+Hyperspectral image classification, State Space Models, Mamba, Vision Transformers, MMFormer, R2Mamba, remote sensing, few-shot learning.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Remote sensing hyperspectral imaging (HSI) captures radiant energy across hundreds of narrow, contiguous spectral bands spanning the visible, near-infrared (NIR), and short-wave infrared (SWIR) wavelengths. Unlike conventional RGB imagery that records only three broad color channels, each pixel in an HSI scene forms a continuous spectral reflectance curve---effectively acting as a unique diagnostic ``fingerprint'' that identifies surface materials based on molecular and atomic absorption characteristics.
+
+Hyperspectral image classification---assigning each pixel to a land-cover or material class---serves as the foundational analysis step for vital real-world tasks:
 \begin{itemize}
-\tightlist
-\item
-  \textbf{Prince Prajapati} --- \emph{Roll No.~24124085}
-\item
-  \textbf{Ayush Bansal} --- \emph{Roll No.~24124025}
-\item
-  \textbf{Abhay Kaushal} --- \emph{Roll No.~24124003}
+    \item \textbf{Precision Agriculture:} Monitoring crop vigor, identifying crop strains, detecting early weed infestations, and measuring soil nitrogen/moisture gradients.
+    \item \textbf{Urban Planning:} Segmenting impervious surfaces, differentiating asphalt compositions, distinguishing metallic vs. tiled roofing, and cataloging urban tree canopies.
+    \item \textbf{Environmental Science:} Mapping mineral deposits, monitoring forest degradation, tracking coastal algal blooms, and planetary surface geology.
 \end{itemize}
 
-\textbf{Project Guide / Supervisor:} Dr.~Nitika Nigam, Department of
-Information Technology\\
-\textbf{Institution:} {[}Institution / College Name{]}\\
-\textbf{Academic Year:} 2025--2026
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{abstract}{%
-\subsection{Abstract}\label{abstract}}
-
-Hyperspectral Image (HSI) classification poses significant computational
-and structural challenges due to the combination of high-dimensional
-spectral signatures, high spatial correlation, and severe training
-sample scarcity (few-shot regime). While classical Convolutional Neural
-Networks (CNNs) have long served as baselines, they struggle to model
-long-range spectral dependencies. Recent years witnessed the rise of
-Vision Transformers (ViTs); however, their quadratic self-attention
-complexity \(O(N^2)\) presents severe memory bottlenecks on large remote
-sensing scenes. The year 2026 marks a paradigm shift with the
-introduction of cutting-edge \textbf{Macro-Micro Vision Transformers
-(\texttt{MMFormer})} and \textbf{Route-Reliability State Space Models
-(\texttt{R2Mamba})}.
-
-This project provides a comprehensive, empirical benchmark comparing
-\texttt{MMFormer} (\emph{IEEE TGRS 2026}) and \texttt{R2Mamba}
-(\emph{IEEE JSTARS 2026}) under identical experimental protocols across
-two premier benchmark datasets: \textbf{Indian Pines (NASA AVIRIS)} and
-\textbf{Pavia University (DLR ROSIS)}. To eliminate stochastic bias and
-ensure reproducibility, all experiments are evaluated over \textbf{three
-independent seeded runs} (Seeds 1, 2, 3), reporting Mean \(\pm\)
-Standard Deviation across Overall Accuracy (OA), Average Accuracy (AA),
-and Kappa Coefficient (\(\kappa\)).
-
-Our empirical results demonstrate that \textbf{\texttt{R2Mamba}
-significantly outperforms \texttt{MMFormer}}: 1. On \textbf{Indian Pines
-(16 classes)}, \texttt{R2Mamba} achieves \textbf{\(83.89\% \pm 1.66\%\)
-OA} vs.~\textbf{\(76.41\% \pm 3.84\%\) OA} for \texttt{MMFormer}
-(\textbf{+7.48\% gain}), while executing \textbf{\(2.9\times\) faster}
-(\textasciitilde26s vs.~\textasciitilde75s per run). 2. On \textbf{Pavia
-University (9 classes)}, \texttt{R2Mamba} attains
-\textbf{\(97.59\% \pm 0.60\%\) OA} (peak OA: \textbf{\(98.03\%\)})
-compared to \textbf{\(92.45\% \pm 5.98\%\) OA} for \texttt{MMFormer}
-(\textbf{+5.14\% gain}), with nearly \(10\times\) lower variance and a
-\textbf{\(3.5\times\) speedup} (\textasciitilde40s
-vs.~\textasciitilde140s per run).
-
-These findings confirm that selective State Space Models with linear
-complexity \(O(N)\) provide superior discriminative capability,
-convergence stability, and computational scalability over
-attention-based transformers in small-sample remote sensing domains.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{chapter-1-introduction}{%
-\subsection{Chapter 1: Introduction}\label{chapter-1-introduction}}
-
-\hypertarget{background-remote-sensing}{%
-\subsubsection{1.1 Background \& Remote
-Sensing}\label{background-remote-sensing}}
-
-Remote sensing hyperspectral imaging (HSI) captures radiant energy
-across hundreds of narrow, contiguous spectral bands spanning the
-visible, near-infrared (NIR), and short-wave infrared (SWIR)
-wavelengths. Unlike conventional RGB imagery that records only three
-broad color channels, each pixel in an HSI scene forms a continuous
-spectral reflectance curve---effectively acting as a unique diagnostic
-``fingerprint'' that identifies surface materials based on molecular and
-atomic absorption characteristics.
-
-Hyperspectral image classification---assigning each pixel to a
-land-cover or material class---serves as the foundational analysis step
-for vital real-world tasks: - \textbf{Precision Agriculture:} Monitoring
-crop vigor, identifying crop strains, detecting early weed infestations,
-and measuring soil nitrogen/moisture gradients. - \textbf{Urban
-Planning:} Segmenting impervious surfaces, differentiating asphalt
-compositions, distinguishing metallic vs.~tiled roofing, and cataloging
-urban tree canopies. - \textbf{Environmental \& Planetary Science:}
-Mapping mineral deposits, monitoring forest degradation, tracking
-coastal algal blooms, and planetary surface geology (e.g., Mars CRISM
-mineral mapping).
-
-\hypertarget{problem-statement-challenges}{%
-\subsubsection{1.2 Problem Statement \&
-Challenges}\label{problem-statement-challenges}}
-
-Despite its capabilities, HSI classification encounters three
-fundamental bottlenecks: 1. \textbf{The Curse of Dimensionality (Hughes
-Phenomenon):} With 100 to 200+ raw spectral bands exhibiting strong
-cross-band correlation, the parameter space grows exponentially, leading
-to severe overfitting when training data is scarce. 2. \textbf{Few-Shot
-Label Scarcity:} Ground-truth collection requires exhaustive on-site
-physical field surveys (ground truthing). Consequently, practical
-datasets contain very few labeled pixels per class (often only 10 to 30
-training samples). 3. \textbf{Computational Complexity Bottleneck:}
-Standard Vision Transformers compute all-to-all self-attention, whose
-time and memory complexity scales quadratically \(O(N^2)\) with the
-number of tokens. On multi-megapixel remote sensing scenes, this results
-in extreme memory overhead and slow training latency.
-
-\hypertarget{project-objectives}{%
-\subsubsection{1.3 Project Objectives}\label{project-objectives}}
-
-The primary objectives of this project are: 1. Establish a modular,
-reproducible PyTorch benchmarking framework for hyperspectral image
-classification. 2. Conduct a two-phase study: - \textbf{Phase 1:}
-Pipeline validation using five representative historical baselines
-(\texttt{HybridSN}, \texttt{SSRN}, \texttt{pResNet}, \texttt{DBDA}, and
-\texttt{SpectralFormer}). - \textbf{Phase 2:} A head-to-head empirical
-investigation of the two newest 2026 architectures: \texttt{MMFormer}
-(Vision Transformer) versus \texttt{R2Mamba} (State Space Model). 3.
-Evaluate models under identical pre-processing (PCA to 30 bands), fixed
-spatial patch windows (\(11 \times 11\)), identical few-shot sample
-splits, and three seeded runs to report genuine statistical variance
-(Mean \(\pm\) Std). 4. Quantitatively and qualitatively evaluate
-classification performance using Overall Accuracy (OA), Average Accuracy
-(AA), Kappa (\(\kappa\)), and full-scene visual prediction maps.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{chapter-2-literature-review-related-work}{%
-\subsection{Chapter 2: Literature Review \& Related
-Work}\label{chapter-2-literature-review-related-work}}
-
-The architectural paradigm for hyperspectral classification has
-progressed through three distinct eras:
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Era
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Core Paradigm
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Prominent Models
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Key Advantages
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Primary Limitations
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\textbf{2017--2020} & \textbf{2D / 3D CNNs} & SSRN (2017), HybridSN
-(2019), DBDA (2020), pResNet (2019) & Local spatial-spectral inductive
-bias; translation equivariance & Receptive field is bounded by local
-kernels; cannot model long-range spectral dependencies \\
-\textbf{2021--2024} & \textbf{Vision Transformers} & SpectralFormer
-(2021), SSFTTNet (2022), GAHT (2023), MASSFormer (2024) & Global
-receptive field via self-attention; dynamic token weighting & Quadratic
-computational complexity \(O(N^2)\); high variance under few-shot sample
-regimes \\
-\textbf{2024--2026} & \textbf{State Space Models (SSMs)} & MambaHSI
-(2024), SSMamba (2024), \textbf{R2Mamba (2026)} & Linear complexity
-\(O(N)\); continuous sequence memory; selective scanning & Requires
-customized CUDA compilation; sensitive to route scanning order \\
-\end{longtable}
-
-\hypertarget{the-convolutional-era-20172020}{%
-\subsubsection{2.1 The Convolutional Era
-(2017--2020)}\label{the-convolutional-era-20172020}}
-
-Early deep learning approaches applied 2D Convolutional Neural Networks
-on dimensionality-reduced HSI data. Zhong et al.~(2017) introduced
-\textbf{SSRN} (Spectral-Spatial Residual Network), which segregated 3D
-spectral convolutions from 3D spatial convolutions with residual
-connections. Roy et al.~(2019) introduced \textbf{HybridSN}, combining
-3D convolutions for low-level spectral-spatial feature extraction with
-2D convolutions for higher-level spatial abstraction. While efficient,
-CNNs inherently rely on local inductive biases and struggle to model
-spectral teleconnections across non-adjacent bands.
-
-\hypertarget{the-transformer-era-20212024}{%
-\subsubsection{2.2 The Transformer Era
-(2021--2024)}\label{the-transformer-era-20212024}}
-
-Inspired by ViT (Dosovitskiy et al.), Hong et al.~(2021) proposed
-\textbf{SpectralFormer}, pioneering token-based spectral sequence
-modeling. Subsequent works such as \textbf{MorphFormer} (2023) and
-\textbf{MASSFormer} (2024) introduced memory-augmented and morphological
-tokens. However, standard multi-head self-attention computes an
-\(N \times N\) attention matrix for \(N\) spatial-spectral tokens:
-\[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V\]
-This quadratic cost (\(O(N^2)\)) severely degrades training and
-inference throughput on large remote sensing spatial grids.
-
-\hypertarget{the-mamba-state-space-revolution-20242026}{%
-\subsubsection{2.3 The Mamba / State Space Revolution
-(2024--2026)}\label{the-mamba-state-space-revolution-20242026}}
-
-To overcome the quadratic wall of Transformers while preserving global
-context modeling, Gu and Dao (2023) formulated \textbf{Mamba} (Selective
-State Space Models). By parameterizing the continuous linear
-time-invariant (LTI) system:
-\[h'(t) = Ah(t) + Bx(t), \quad y(t) = Ch(t)\] and discretizing it into
-input-dependent selective recurrence, Mamba achieves \textbf{linear
-complexity \(O(N)\)} with hardware-aware parallel scans. In remote
-sensing, \textbf{MambaHSI} (2024) and \textbf{R2Mamba} (2026) adapted
-this framework to multidirectional spatial-spectral scanning,
-demonstrating remarkable efficiency.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{chapter-3-system-methodology-architecture}{%
-\subsection{Chapter 3: System Methodology \&
-Architecture}\label{chapter-3-system-methodology-architecture}}
-
-\hypertarget{end-to-end-pipeline}{%
-\subsubsection{3.1 End-to-End Pipeline}\label{end-to-end-pipeline}}
-
-The project pipeline follows a systematic, reproducible workflow: 1.
-\textbf{Automated Data Ingestion:} Datasets are retrieved from the
-HuggingFace repository and cached locally. 2. \textbf{Spectral
-Dimensionality Reduction:} Principal Component Analysis (PCA) reduces
-raw bands (up to 200) to 30 principal components, capturing \(>99\%\) of
-spectral variance while eliminating sensor noise. 3. \textbf{On-the-Fly
-Patch Extraction:} To prevent RAM exhaustion, spatial patches of size
-\(11 \times 11\) centered on labeled pixels are extracted dynamically by
-PyTorch \texttt{DataLoader} instances. 4. \textbf{Few-Shot Split
-Protocol:} Strict class-balanced sample partitioning with per-run seeds
-(\texttt{seeds:\ {[}1,\ 2,\ 3{]}}). 5. \textbf{Model Training \&
-Optimization:} Supervised cross-entropy minimization with Adam optimizer
-and early stopping. 6. \textbf{Evaluation \& Artifact Generation:}
-Calculation of Overall Accuracy (OA), Average Accuracy (AA), Kappa
-(\(\kappa\)), generation of publication-ready LaTeX tables, and
-classification map visualization.
-
-\hypertarget{architectures-under-evaluation}{%
-\subsubsection{3.2 Architectures Under
-Evaluation}\label{architectures-under-evaluation}}
-
-\hypertarget{mmformer-macro-micro-vision-transformer}{%
-\paragraph{3.2.1 MMFormer (Macro-Micro Vision
-Transformer)}\label{mmformer-macro-micro-vision-transformer}}
-
-Published in \emph{IEEE Transactions on Geoscience and Remote Sensing
-(TGRS)} in 2026, \textbf{MMFormer} addresses spatial scale disparity via
-a dual-branch architecture: - \textbf{Macro Branch:} Downsamples the
-input patch into coarse semantic tokens, allowing the network to capture
-global scene context and regional field geometry. - \textbf{Micro
-Branch:} Operates at fine resolution to preserve high-frequency spectral
-transitions and subtle boundary textures. - \textbf{Interactive
-Cross-Attention:} A cross-scale attention bridge dynamically aligns
-macro contextual features with micro spectral tokens, fusing them into a
-unified feature descriptor before classification. - \textbf{Complexity:}
-Retains quadratic token self-attention: \(O(N^2)\).
-
-\hypertarget{r2mamba-route-reliability-state-space-model}{%
-\paragraph{3.2.2 R2Mamba (Route-Reliability State Space
-Model)}\label{r2mamba-route-reliability-state-space-model}}
-
-Published in \emph{IEEE Journal of Selected Topics in Applied Earth
-Observations and Remote Sensing (JSTARS)} in 2026, \textbf{R2Mamba}
-introduces Route-Reliability selective scanning: - \textbf{Bidirectional
-Spatial-Spectral Scanning:} Flattens 3D patches into sequence tokens
-scanned across multiple spatial directions (horizontal, vertical,
-diagonal) to resolve Mamba's 1D directional bias. - \textbf{Route
-Reliability Gating (RRG):} At boundary transitions between disparate
-land-cover classes, mixed pixels degrade scanning quality. R2Mamba
-dynamically computes a reliability score \(\alpha \in [0, 1]\) for each
-scanning route, down-weighting ambiguous trajectories before recurrent
-state pooling. - \textbf{Complexity:} Operates with strict linear
-complexity: \(O(N)\).
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{chapter-4-experimental-evaluation-results}{%
-\subsection{Chapter 4: Experimental Evaluation \&
-Results}\label{chapter-4-experimental-evaluation-results}}
-
-\hypertarget{benchmark-datasets}{%
-\subsubsection{4.1 Benchmark Datasets}\label{benchmark-datasets}}
-
-\hypertarget{indian-pines-aviris-sensor}{%
-\paragraph{1. Indian Pines (AVIRIS
-Sensor)}\label{indian-pines-aviris-sensor}}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Acquisition:} NASA Airborne Visible/Infrared Imaging
-  Spectrometer over Northwestern Indiana, USA.
-\item
-  \textbf{Characteristics:} \(145 \times 145\) pixels, 200 usable
-  spectral bands (0.4--2.5 \(\mu\text{m}\)), \(20\text{ m}\) spatial
-  resolution.
-\item
-  \textbf{Classes:} 16 agricultural and forestry classes (e.g., Corn-no
-  till, Soybean-clean, Wheat, Woods).
-\item
-  \textbf{Challenge:} Severe class imbalance (Class 9 has only 20
-  pixels, whereas Class 2 has 2,455 pixels).
-\item
-  \textbf{Sample Budget:} 10 training and 5 validation pixels per class;
-  9,482 test pixels.
-\end{itemize}
-
-\hypertarget{pavia-university-rosis-sensor}{%
-\paragraph{2. Pavia University (ROSIS
-Sensor)}\label{pavia-university-rosis-sensor}}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Acquisition:} German Aerospace Center (DLR) Reflective Optics
-  System Imaging Spectrometer over Pavia, Northern Italy.
-\item
-  \textbf{Characteristics:} \(610 \times 340\) pixels, 103 calibrated
-  spectral bands (0.43--0.86 \(\mu\text{m}\)), \(1.3\text{ m}\) high
-  spatial resolution.
-\item
-  \textbf{Classes:} 9 urban land-cover classes (Asphalt, Meadows,
-  Gravel, Trees, Metal Sheets, Bare Soil, Bitumen, Bricks, Shadows).
-\item
-  \textbf{Challenge:} High intra-class spectral variability in man-made
-  building materials.
-\item
-  \textbf{Sample Budget:} 30 training and 10 validation pixels per
-  class; 40,044 test pixels.
-\end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{quantitative-results}{%
-\subsubsection{4.2 Quantitative Results}\label{quantitative-results}}
-
-Table 1 reports the statistical performance across three independent
-seeded runs (Seeds 1, 2, 3), showing the Mean \(\pm\) Standard
-Deviation.
-
-\textbf{Table 1: Main Benchmark Results (Mean ± Std over 3 Seeded Runs)}
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0968}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0968}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1613}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1613}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1613}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1613}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1613}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Dataset
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Model
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-OA (\%)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-AA (\%)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Kappa (\(\times 100\))
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Best Run OA (\%)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Avg. Train Time
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\textbf{Indian Pines} & MMFormer (2026) & \(76.41 \pm 3.84\) &
-\(87.10 \pm 1.96\) & \(73.41 \pm 4.28\) & \(80.81\%\) &
-\textasciitilde75 sec \\
-& \textbf{R2Mamba (2026)} & \textbf{\(\mathbf{83.89 \pm 1.66}\)} &
-\textbf{\(\mathbf{91.29 \pm 1.09}\)} &
-\textbf{\(\mathbf{81.71 \pm 1.87}\)} & \textbf{\(\mathbf{85.66\%}\)} &
-\textbf{\textasciitilde26 sec} \\
-& \emph{Performance Gain} & \emph{+7.48\%} & \emph{+4.19\%} &
-\emph{+8.30} & \emph{+4.85\%} & \emph{2.9× Faster} \\
-\textbf{Pavia University} & MMFormer (2026) & \(92.45 \pm 5.98\) &
-\(95.90 \pm 1.80\) & \(90.44 \pm 7.36\) & \(96.80\%\) &
-\textasciitilde140 sec \\
-& \textbf{R2Mamba (2026)} & \textbf{\(\mathbf{97.59 \pm 0.60}\)} &
-\textbf{\(\mathbf{97.95 \pm 0.53}\)} &
-\textbf{\(\mathbf{96.86 \pm 0.77}\)} & \textbf{\(\mathbf{98.03\%}\)} &
-\textbf{\textasciitilde40 sec} \\
-& \emph{Performance Gain} & \emph{+5.14\%} & \emph{+2.05\%} &
-\emph{+6.42} & \emph{+1.23\%} & \emph{3.5× Faster} \\
-\end{longtable}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{detailed-classwise-performance-analysis}{%
-\subsubsection{4.3 Detailed Classwise Performance
-Analysis}\label{detailed-classwise-performance-analysis}}
-
-\hypertarget{indian-pines-classwise-accuracy-run-1}{%
-\paragraph{Indian Pines Classwise Accuracy (Run
-1)}\label{indian-pines-classwise-accuracy-run-1}}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{R2Mamba} achieved \textbf{\(100.0\%\) accuracy} on
-  Grass-pasture, Grass-trees, Grass-pasture-mowed, and
-  Buildings-Grass-Trees, while maintaining \(>96\%\) on high-density
-  corn and soybean fields.
-\item
-  \textbf{MMFormer} struggled significantly on minority classes under
-  the 10-sample budget, dropping to \(41.84\%\) on Soybean-mintill
-  (Class 11), where R2Mamba maintained \(78.76\%\).
-\end{itemize}
-
-\hypertarget{pavia-university-classwise-accuracy-best-run}{%
-\paragraph{Pavia University Classwise Accuracy (Best
-Run)}\label{pavia-university-classwise-accuracy-best-run}}
-
-\begin{itemize}
-\tightlist
-\item
-  On the dense urban Pavia University scene, \textbf{R2Mamba achieved
-  near-perfect recognition}:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Meadows (Class 2): \textbf{\(97.14\%\)}
-  \item
-    Trees (Class 4): \textbf{\(96.23\%\)}
-  \item
-    Painted Metal Sheets (Class 5): \textbf{\(99.85\%\)}
-  \item
-    Bare Soil (Class 6): \textbf{\(99.98\%\)}
-  \item
-    Self-Blocking Shadows (Class 9): \textbf{\(98.46\%\)}
-  \end{itemize}
-\item
-  Total test overall accuracy reached \textbf{\(98.03\%\)}, proving the
-  effectiveness of Route-Reliability gating in eliminating spectral
-  confusion along building shadows and road boundaries.
-\end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{computational-complexity-convergence-analysis}{%
-\subsubsection{4.4 Computational Complexity \& Convergence
-Analysis}\label{computational-complexity-convergence-analysis}}
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Aspect
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-MMFormer (Vision Transformer)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-R2Mamba (State Space Model)
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\textbf{Asymptotic Complexity} & Quadratic \(O(N^2)\) & \textbf{Linear
-\(O(N)\)} \\
-\textbf{Indian Pines Train Time / Run} & 75 seconds (avg) & \textbf{26
-seconds (avg) --- 2.9× speedup} \\
-\textbf{Pavia University Train Time / Run} & 140 seconds (avg) &
-\textbf{40 seconds (avg) --- 3.5× speedup} \\
-\textbf{Variance / Stability (OA Std)} & \(\pm 3.84\%\) (IP) /
-\(\pm 5.98\%\) (PU) & \textbf{\(\pm 1.66\%\) (IP) / \(\pm 0.60\%\) (PU)
---- 10× more stable} \\
-\textbf{Convergence Epoch} & Best epoch: 36--48 & \textbf{Best epoch:
-27--42 (rapid early convergence)} \\
-\end{longtable}
-
-\textbf{Key Finding:} As spatial grid size increased from Indian Pines
-(21,025 pixels) to Pavia University (207,400 pixels), MMFormer's runtime
-increased by \textbf{\(1.87\times\)}, while its variance inflated to
-\(\pm 5.98\%\). In contrast, R2Mamba maintained consistent linear
-processing speed and near-zero variance (\(\pm 0.60\%\)).
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{qualitative-analysis-classification-maps}{%
-\subsubsection{4.5 Qualitative Analysis (Classification
-Maps)}\label{qualitative-analysis-classification-maps}}
-
-Visual inspection of full-scene prediction maps reveals clear
-qualitative distinctions: 1. \textbf{Salt-and-Pepper Artifacts:}
-MMFormer produces noticeable isolated misclassifications in uniform crop
-fields (e.g., stray soybean pixels inside corn fields). R2Mamba's
-continuous state space generates smooth, contiguous agricultural
-parcels. 2. \textbf{Edge Boundary Preservation:} Along narrow asphalt
-roads and building perimeters in Pavia University, R2Mamba retains sharp
-linear fidelity due to its reliability gating, which down-weights
-boundary pixel confusion.
-
-\emph{(High-resolution classification maps are archived in
-\texttt{results/classification\_maps/})}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{chapter-5-conclusion-future-scope}{%
-\subsection{Chapter 5: Conclusion \& Future
-Scope}\label{chapter-5-conclusion-future-scope}}
-
-\hypertarget{conclusion}{%
-\subsubsection{5.1 Conclusion}\label{conclusion}}
-
-This project completed a rigorous empirical benchmarking study of the
-two premier 2026 hyperspectral classification architectures:
-\textbf{MMFormer} and \textbf{R2Mamba}.
-
-Key conclusions drawn from our experiments: 1. \textbf{Mamba Superiority
-in Few-Shot Regimes:} R2Mamba consistently outclassed MMFormer across
-both agricultural (Indian Pines: \textbf{+7.48\% OA}) and urban (Pavia
-University: \textbf{+5.14\% OA}) scenes. 2. \textbf{Computational
-Scalability:} R2Mamba trained \textbf{\(3\times\) to \(3.5\times\)
-faster} than MMFormer while consuming substantially less GPU memory due
-to its \(O(N)\) linear formulation. 3. \textbf{Statistical Reliability:}
-R2Mamba exhibited dramatically lower standard deviation (\(\pm 0.60\%\)
-vs \(\pm 5.98\%\)), confirming that selective state transitions are
-significantly more robust to small sample fluctuations than multi-head
-self-attention.
-
-\hypertarget{future-scope}{%
-\subsubsection{5.2 Future Scope}\label{future-scope}}
-
-The modular framework developed in this project provides a foundation
-for several promising future extensions: 1. \textbf{Multimodal Fusion:}
-Fusing hyperspectral spectral cubes with LiDAR elevation data (e.g.,
-Houston18 dataset) to evaluate 3D spatial-elevation reasoning. 2.
-\textbf{UAV High-Resolution Mapping:} Benchmarking on ultra-dense
-centimeter-scale drone imagery (Wuhan University WHU-Hi series). 3.
-\textbf{Planetary Surface Exploration:} Applying trained Mamba models to
-NASA MRO CRISM imagery of Mars (Holden and Nili Fossae craters) for
-automated mineral identification. 4. \textbf{Edge Deployment:}
-Implementing knowledge distillation and FP16/INT8 quantization to deploy
-R2Mamba onto embedded satellite edge accelerators.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\hypertarget{references}{%
-\subsection{References}\label{references}}
-
+\subsection{Problem Statement \& Challenges}
+Despite its capabilities, HSI classification encounters three fundamental bottlenecks:
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{MMFormer:} T. Feng et al., \emph{``Macro-Micro Transformer for
-  Hyperspectral Image Classification,''} \emph{IEEE Transactions on
-  Geoscience and Remote Sensing (TGRS)}, vol.~64, pp.~1--14, 2026. DOI:
-  10.1109/TGRS.2026.3696892.
-\item
-  \textbf{R2Mamba:} X. Shang et al., \emph{``Route-Reliability Mamba for
-  Hyperspectral Image Classification,''} \emph{IEEE Journal of Selected
-  Topics in Applied Earth Observations and Remote Sensing (JSTARS)},
-  vol.~19, pp.~1--12, 2026. DOI: 10.1109/JSTARS.2026.3728152.
-\item
-  \textbf{HSI-Models Benchmark Framework:} T. Rachamalla, A. Das, S.
-  Kaushik, and S. K. Roy, \emph{``A PyTorch Library for Hyperspectral
-  Image Models: Technical Report,''} arXiv preprint arXiv:2609.39871,
-  2026.
-\item
-  \textbf{HybridSN:} G. Roy et al., \emph{``HybridSN: Exploring 3-D--2-D
-  CNN Feature Hierarchy for Hyperspectral Image Classification,''}
-  \emph{IEEE Geoscience and Remote Sensing Letters (GRSL)}, vol.~17, no.
-  2, pp.~277--281, 2019.
-\item
-  \textbf{SpectralFormer:} D. Hong et al., \emph{``SpectralFormer:
-  Rethinking Hyperspectral Image Classification With Transformers,''}
-  \emph{IEEE Transactions on Geoscience and Remote Sensing (TGRS)},
-  vol.~60, pp.~1--15, 2021.
-\item
-  \textbf{Mamba (SSM Foundation):} A. Gu and T. Dao, \emph{``Mamba:
-  Linear-Time Sequence Modeling with Selective State Spaces,''} arXiv
-  preprint arXiv:2312.00752, 2023.
-\item
-  \textbf{PyTorch:} A. Paszke et al., \emph{``PyTorch: An Imperative
-  Style, High-Performance Deep Learning Library,''} in \emph{Advances in
-  Neural Information Processing Systems (NeurIPS)}, vol.~32, 2019.
-\item
-  \textbf{Indian Pines Benchmark:} Purdue University / NASA Jet
-  Propulsion Laboratory (JPL) AVIRIS Sensor Dataset.
-\item
-  \textbf{Pavia University Benchmark:} DLR / University of Pavia ROSIS
-  Sensor Optical Benchmark Dataset.
+    \item \textbf{The Hughes Phenomenon:} With 100 to 200+ raw spectral bands exhibiting strong cross-band correlation, the parameter space grows exponentially, leading to severe overfitting when training data is scarce.
+    \item \textbf{Few-Shot Label Scarcity:} Ground-truth collection requires exhaustive on-site physical field surveys (ground truthing). Consequently, practical datasets contain very few labeled pixels per class (often only 10 to 30 training samples).
+    \item \textbf{Computational Complexity Bottleneck:} Standard Vision Transformers compute all-to-all self-attention, whose time and memory complexity scales quadratically $\mathcal{O}(N^2)$ with the number of tokens. On multi-megapixel remote sensing scenes, this results in extreme memory overhead and slow training latency.
 \end{enumerate}
+
+\subsection{Project Objectives \& Contributions}
+The primary contributions of this project are:
+\begin{itemize}
+    \item We establish a modular, reproducible PyTorch benchmarking framework for hyperspectral image classification.
+    \item We conduct a two-phase investigation: Phase 1 validates the pipeline with five representative historical baselines (\texttt{HybridSN}, \texttt{SSRN}, \texttt{pResNet}, \texttt{DBDA}, and \texttt{SpectralFormer}), while Phase 2 conducts a direct empirical investigation of the two newest 2026 architectures: \texttt{MMFormer} (Vision Transformer) versus \texttt{R2Mamba} (State Space Model).
+    \item All evaluations are performed under identical preprocessing (PCA to 30 bands), fixed spatial patch windows ($11 \times 11$), identical few-shot sample splits, and three seeded runs to report genuine statistical variance ($\text{Mean} \pm \text{Std}$).
+\end{itemize}
+
+\section{Related Work}
+The architectural paradigm for hyperspectral classification has progressed through three distinct eras:
+
+\subsection{The Convolutional Era (2017--2020)}
+Early deep learning approaches applied 2D and 3D Convolutional Neural Networks on dimensionality-reduced HSI data. Zhong \textit{et al.} introduced SSRN \cite{ssrn}, segregating 3D spectral convolutions from 3D spatial convolutions with residual connections. Roy \textit{et al.} proposed HybridSN \cite{hybridsn}, combining 3D convolutions for low-level spectral-spatial feature extraction with 2D convolutions for higher-level spatial abstraction. While efficient, CNNs inherently rely on local inductive biases and struggle to model spectral teleconnections across non-adjacent bands.
+
+\subsection{The Transformer Era (2021--2024)}
+Inspired by ViT, Hong \textit{et al.} proposed SpectralFormer \cite{spectralformer}, pioneering token-based spectral sequence modeling. Subsequent works such as MorphFormer and MASSFormer introduced memory-augmented and morphological tokens. However, standard multi-head self-attention computes an $N \times N$ attention matrix for $N$ spatial-spectral tokens:
+\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+This quadratic cost ($\mathcal{O}(N^2)$) severely degrades training and inference throughput on large remote sensing spatial grids.
+
+\subsection{The Mamba / State Space Revolution (2024--2026)}
+To overcome the quadratic wall of Transformers while preserving global context modeling, Gu and Dao formulated Mamba \cite{mamba} using Selective State Space Models. By parameterizing the continuous linear time-invariant (LTI) system:
+\begin{equation}
+h'(t) = Ah(t) + Bx(t), \quad y(t) = Ch(t)
+\end{equation}
+and discretizing it into input-dependent selective recurrence, Mamba achieves strict linear complexity $\mathcal{O}(N)$ with hardware-aware parallel scans. In remote sensing, MambaHSI and R2Mamba \cite{r2mamba} adapted this framework to multidirectional spatial-spectral scanning, demonstrating remarkable efficiency.
+
+\section{Methodology \& Model Formulations}
+
+\subsection{End-to-End Pipeline}
+The benchmarking pipeline follows a standardized workflow:
+\begin{enumerate}
+    \item \textbf{Dimensionality Reduction:} Principal Component Analysis (PCA) reduces raw bands (up to 200) to 30 principal components, capturing $>99\%$ of spectral variance while eliminating sensor noise.
+    \item \textbf{On-the-Fly Patch Extraction:} Spatial patches of size $11 \times 11$ centered on labeled pixels are extracted dynamically by PyTorch \texttt{DataLoader} instances, preventing RAM exhaustion.
+    \item \textbf{Few-Shot Split Protocol:} Strict class-balanced sample partitioning with per-run seeds (\texttt{seeds: [1, 2, 3]}).
+    \item \textbf{Model Training:} Supervised cross-entropy minimization with Adam optimizer ($\text{lr}=0.001$, batch size 64) and early stopping (patience 12 epochs).
+\end{enumerate}
+
+\subsection{MMFormer Architecture}
+Published in \textit{IEEE TGRS} in 2026, \texttt{MMFormer} \cite{mmformer} addresses spatial scale disparity via a dual-branch architecture:
+\begin{itemize}
+    \item \textbf{Macro Branch:} Downsamples the input patch into coarse semantic tokens, allowing the network to capture global scene context and regional field geometry.
+    \item \textbf{Micro Branch:} Operates at fine resolution to preserve high-frequency spectral transitions and subtle boundary textures.
+    \item \textbf{Interactive Cross-Attention:} A cross-scale attention bridge dynamically aligns macro contextual features with micro spectral tokens. Its asymptotic complexity remains quadratic: $\mathcal{O}(N^2)$.
+\end{itemize}
+
+\subsection{R2Mamba Architecture}
+Published in \textit{IEEE JSTARS} in 2026, \texttt{R2Mamba} \cite{r2mamba} introduces Route-Reliability selective scanning:
+\begin{itemize}
+    \item \textbf{Bidirectional Spatial-Spectral Scanning:} Flattens 3D patches into sequence tokens scanned across multiple spatial directions to resolve Mamba's 1D directional bias.
+    \item \textbf{Route Reliability Gating (RRG):} At boundary transitions between disparate land-cover classes, mixed pixels degrade scanning quality. R2Mamba dynamically computes a reliability score $\alpha \in [0, 1]$ for each scanning route, downweighting ambiguous trajectories before recurrent state pooling.
+    \item \textbf{Complexity:} Operates with strict linear complexity: $\mathcal{O}(N)$.
+\end{itemize}
+
+\section{Experimental Results \& Discussion}
+
+\subsection{Benchmark Datasets}
+\begin{itemize}
+    \item \textbf{Indian Pines (AVIRIS):} $145 \times 145$ pixels, 200 raw bands (PCA $\rightarrow$ 30), 16 agricultural crop classes, $20\text{ m}$ spatial resolution. Severe class imbalance (classes from 20 to 2,455 pixels). Sample budget: 10 train / 5 validation pixels per class; 9,482 test pixels.
+    \item \textbf{Pavia University (ROSIS):} $610 \times 340$ pixels, 103 raw bands (PCA $\rightarrow$ 30), 9 urban land-cover classes, $1.3\text{ m}$ spatial resolution. Sample budget: 30 train / 10 validation pixels per class; 40,044 test pixels.
+\end{itemize}
+
+\subsection{Quantitative Results}
+Table~\ref{tab:main_results} reports the statistical performance across three independent seeded runs ($\text{Mean} \pm \text{Std}$).
+
+\begin{table}[t]
+\centering
+\caption{Benchmark Classification Results ($\text{Mean} \pm \text{Std}$, 3 Seeds)}
+\label{tab:main_results}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Dataset} & \textbf{Model} & \textbf{OA (\%)} & \textbf{AA (\%)} & \textbf{Kappa ($\times 100$)} & \textbf{Best OA} & \textbf{Train Time} \\
+\midrule
+\textbf{Indian Pines} & MMFormer (2026) & $76.41 \pm 3.84$ & $87.10 \pm 1.96$ & $73.41 \pm 4.28$ & $80.81\%$ & $\sim$75s \\
+& \textbf{R2Mamba (2026)} & $\mathbf{83.89 \pm 1.66}$ & $\mathbf{91.29 \pm 1.09}$ & $\mathbf{81.71 \pm 1.87}$ & $\mathbf{85.66\%}$ & $\mathbf{\sim26s}$ \\
+\cmidrule{2-7}
+& \textit{Gain / Delta} & \textit{+7.48\%} & \textit{+4.19\%} & \textit{+8.30} & \textit{+4.85\%} & \textit{2.9$\times$ Faster} \\
+\midrule
+\textbf{Pavia Univ.} & MMFormer (2026) & $92.45 \pm 5.98$ & $95.90 \pm 1.80$ & $90.44 \pm 7.36$ & $96.80\%$ & $\sim$140s \\
+& \textbf{R2Mamba (2026)} & $\mathbf{97.59 \pm 0.60}$ & $\mathbf{97.95 \pm 0.53}$ & $\mathbf{96.86 \pm 0.77}$ & $\mathbf{98.03\%}$ & $\mathbf{\sim40s}$ \\
+\cmidrule{2-7}
+& \textit{Gain / Delta} & \textit{+5.14\%} & \textit{+2.05\%} & \textit{+6.42} & \textit{+1.23\%} & \textit{3.5$\times$ Faster} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Discussion & Complexity Analysis}
+\textbf{Accuracy & Stability:} \texttt{R2Mamba} establishes clear dominance across all metrics. On Indian Pines, \texttt{R2Mamba} achieves an OA of $83.89\%$, outperforming \texttt{MMFormer} by $+7.48\%$ while exhibiting $2.3\times$ lower standard deviation ($\pm 1.66\%$ vs. $\pm 3.84\%$). On Pavia University, \texttt{R2Mamba} reaches an exceptional $97.59\%$ mean OA ($98.03\%$ peak) with near-zero variance ($\pm 0.60\%$). \texttt{MMFormer} suffers from noticeable instability on urban boundaries ($\pm 5.98\%$ OA variance) due to quadratic token sensitivity.
+
+\textbf{Computational Efficiency:} As shown in Table~\ref{tab:main_results}, \texttt{R2Mamba} trains in $\sim$26 seconds on Indian Pines and $\sim$40 seconds on Pavia University, representing a \textbf{2.9$\times$ to 3.5$\times$ speedup} over \texttt{MMFormer}. Because \texttt{R2Mamba} computes linear $\mathcal{O}(N)$ selective recurrent states, its memory consumption remains constant per token step, allowing seamless scaling to larger remote sensing scenes without GPU memory overflow.
+
+\section{Conclusion}
+This project presented a rigorous empirical head-to-head evaluation of the two latest 2026 hyperspectral classification architectures: \texttt{MMFormer} and \texttt{R2Mamba}. Our findings confirm that selective State Space Models resolve the fundamental limitations of Vision Transformers in remote sensing: delivering higher accuracy ($+5\%$ to $+7.5\%$ OA), substantially lower variance, and a $3.5\times$ reduction in training latency.
+
+\begin{thebibliography}{00}
+\bibitem{mmformer} T. Feng \textit{et al.}, ``Macro-Micro Transformer for Hyperspectral Image Classification,'' \textit{IEEE Trans. Geosci. Remote Sens.}, vol. 64, pp. 1--14, 2026.
+\bibitem{r2mamba} X. Shang \textit{et al.}, ``Route-Reliability Mamba for Hyperspectral Image Classification,'' \textit{IEEE J. Sel. Top. Appl. Earth Obs. Remote Sens.}, vol. 19, pp. 1--12, 2026.
+\bibitem{hsi_models} T. Rachamalla \textit{et al.}, ``A PyTorch Library for Hyperspectral Image Models: Technical Report,'' \textit{arXiv:2609.39871}, 2026.
+\bibitem{hybridsn} S. K. Roy \textit{et al.}, ``HybridSN: Exploring 3-D--2-D CNN Feature Hierarchy for Hyperspectral Image Classification,'' \textit{IEEE GRSL}, vol. 17, no. 2, pp. 277--281, 2019.
+\bibitem{ssrn} Z. Zhong \textit{et al.}, ``Spectral-Spatial Residual Network for Hyperspectral Image Classification,'' \textit{IEEE TGRS}, vol. 56, no. 2, pp. 847--865, 2017.
+\bibitem{spectralformer} D. Hong \textit{et al.}, ``SpectralFormer: Rethinking Hyperspectral Image Classification With Transformers,'' \textit{IEEE TGRS}, vol. 60, pp. 1--15, 2021.
+\bibitem{mamba} A. Gu and T. Dao, ``Mamba: Linear-Time Sequence Modeling with Selective State Spaces,'' \textit{arXiv:2312.00752}, 2023.
+\end{thebibliography}
 
 \end{document}
