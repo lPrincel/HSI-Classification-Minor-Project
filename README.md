@@ -10,10 +10,10 @@
 | Name | Role | GitHub |
 |---|---|---|
 | **Prince Prajapati** (Team Lead) | Model Training, Pipeline, Notebooks & Experiments | [@lPrincel](https://github.com/lPrincel) |
-| *[Teammate 2]* | Research Methodology & Project Report | *[@username]* |
-| *[Teammate 3]* | Data Visualization, Slides & Presentation | *[@username]* |
+| *Ayush Bansal* | Research Methodology & Project Report | *[@username]* |
+| *Abhay Kaushal* | Data Visualization, Slides & Presentation | *[@username]* |
 
-**Academic Guide:** *[Professor Name]*, Department of CSE
+**Academic Guide:** *Nitika Nigam*, Department of IT
 
 ---
 
