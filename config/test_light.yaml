@@ -1,0 +1,129 @@
+# ============================================================================
+#  TEST CONFIG  —  lightweight smoke-test before the real experiments
+# ============================================================================
+#  Purpose : Verify the full pipeline works (download → train → results)
+#            using only small CNN models. Fast even on CPU.
+#
+#  Run:   python main.py config/test_light.yaml
+#
+#  Once this finishes cleanly, move to config/project_main.yaml for the
+#  actual minor project runs (Mamba + Transformer models).
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+#  1. RESULTS
+# ----------------------------------------------------------------------------
+results:
+  directory: "Results/Test_Light"
+  keep_best_worst_checkpoints_only: True
+  checkpoint_pruning_metric: "OA"
+
+
+# ----------------------------------------------------------------------------
+#  2. DATASETS  — just one small scene to verify download + pipeline
+# ----------------------------------------------------------------------------
+#  Indian_Pines : 145×145 px, 200 bands, 16 classes — smallest scene
+#                 downloads fast, trains fast
+dataset:
+  names: ["Indian_Pines"]
+  run_all_datasets: False
+  patch_size: 11        # keep standard (smaller doesn't help much)
+  stride: 1
+  verbose: True         # show what's happening so you can spot errors early
+
+
+# ----------------------------------------------------------------------------
+#  3. MODELS  — only lightweight CNNs, no Mamba/Transformer
+#              sorted from lightest to slightly heavier
+# ----------------------------------------------------------------------------
+#  HybridSN     : 3D-2D CNN, very well known, fast             (2019, GRSL)
+#  SSRN         : Spectral-Spatial Residual Network, tiny      (2017, TGRS)
+#  pResNet      : Pyramidal ResNet, compact                    (2019, TGRS)
+#  DBDA         : Double-Branch Dual-Attention CNN             (2020, RS)
+#  SpectralFormer: lightest Transformer — good bridge to next  (2021, TGRS)
+model:
+  name: ["HybridSN", "SSRN", "pResNet", "DBDA", "SpectralFormer"]
+  run_all_models: False
+  exclude: []
+  print_summary: True   # print parameter count so you see model size
+  summary_only: False
+  summary_depth: 1
+
+
+# ----------------------------------------------------------------------------
+#  4. DATA SPLIT  — small samples, 2 runs only → finishes in minutes
+# ----------------------------------------------------------------------------
+data_split:
+  method: "samples"
+  disjoint: False
+  split_samples: [10, 5]        # 10 train / 5 val per class
+  split_samples_overrides: {}   # no overrides needed at this scale
+  split_ratios: null
+  random_state: 42
+  seeds: [1, 2]                 # only 2 runs → mean ± std, runs fast
+  print_stats: True
+
+
+# ----------------------------------------------------------------------------
+#  5. PREPROCESSING
+# ----------------------------------------------------------------------------
+preprocessing:
+  dim_reduction_method: pca
+  num_pca_bands: 30             # same as main project (keeps results comparable)
+  maxpool_kernel: 2
+  use_channel_dim: True
+  band_indices: null
+
+
+# ----------------------------------------------------------------------------
+#  6. TRAINING  — reduced epochs + aggressive early stopping
+# ----------------------------------------------------------------------------
+training:
+  num_epochs: 30                # enough to see convergence, not full training
+  num_runs: 2                   # 2 seeds → quick mean ± std
+  batch_size: 32                # smaller batch = less RAM, still stable
+  learning_rate: 0.001
+  optimizer: "adam"
+  optimizer_params: {}
+  patience: 8                   # stop early if no val improvement for 8 epochs
+  checkpoint_interval: 10
+  num_workers: 2                # low worker count — safe on Kaggle/Colab
+
+
+# ----------------------------------------------------------------------------
+#  7. DEVICE
+# ----------------------------------------------------------------------------
+device:
+  use_cuda: True
+  cuda_device: 0                # 0 = first GPU on Kaggle / Colab
+
+
+# ----------------------------------------------------------------------------
+#  8. VISUALIZATION  — generate maps so you can visually check output
+# ----------------------------------------------------------------------------
+visualization:
+  generate_maps: True
+  mode: "labeled_only"
+  use_spy_colors: True
+  block_background: True
+  show_colorbar: False
+  dpi: 150                      # lower DPI = smaller files during testing
+
+
+# ----------------------------------------------------------------------------
+#  9. MAP ARRANGEMENT  — disabled for now, enable after training
+# ----------------------------------------------------------------------------
+map_arrangement:
+  enabled: False
+
+
+# ----------------------------------------------------------------------------
+#  10. SCORE ARRANGEMENT  — run after training with --arrange-scores
+# ----------------------------------------------------------------------------
+score_arrangement:
+  all_datasets: True
+  all_models: True
+  models: []
+  use_mean: True
+

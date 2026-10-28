@@ -1,0 +1,3 @@
+Run,Epochs,Best_Epoch,Patch_Size,Batch_Size,Split_Config,Train_Samples,Val_Samples,Test_Samples,OA,AA,Kappa,Training_Time,Class_1_Acc,Class_2_Acc,Class_3_Acc,Class_4_Acc,Class_5_Acc,Class_6_Acc,Class_7_Acc,Class_8_Acc,Class_9_Acc,Class_10_Acc,Class_11_Acc,Class_12_Acc,Class_13_Acc,Class_14_Acc,Class_15_Acc,Class_16_Acc
+1,30,28,11,32,"(10, 5)",160,80,9482,67.6,79.1,0.6363,00:00:11,96.77,59.66,62.84,76.21,79.17,96.92,100.0,74.95,100.0,83.17,49.16,52.01,97.89,78.4,58.4,100.0
+2,30,30,11,32,"(10, 5)",160,80,9482,52.26,68.69,0.4574,00:00:11,96.77,29.02,5.52,73.79,62.25,94.55,100.0,97.41,100.0,36.52,53.49,32.05,98.42,60.8,58.4,100.0

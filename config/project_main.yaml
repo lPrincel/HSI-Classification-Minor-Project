@@ -1,0 +1,95 @@
+# ============================================================================
+#  MINOR PROJECT MAIN CONFIG — Two Latest 2026 Models Only
+# ============================================================================
+#  Models compared (strictly 2026 architectures):
+#    - MMFormer : 2026 Macro-Micro Transformer (IEEE TGRS)
+#    - R2Mamba  : 2026 Route-Reliability Mamba / SSM (IEEE JSTARS)
+# ============================================================================
+
+results:
+  directory: "Results/Minor_Project_Main"
+  keep_best_worst_checkpoints_only: True
+  checkpoint_pruning_metric: "OA"
+
+dataset:
+  names: ["Indian_Pines", "Pavia University"]
+  run_all_datasets: False
+  patch_size: 11
+  stride: 1
+  verbose: True
+
+model:
+  name: [
+    "MMFormer",         # 2026 Transformer (IEEE TGRS)
+    "R2Mamba"           # 2026 Mamba / SSM (IEEE JSTARS)
+  ]
+  run_all_models: False
+  exclude: []
+  print_summary: True
+  summary_only: False
+  summary_depth: 1
+
+data_split:
+  method: "samples"
+  disjoint: False
+  split_samples: [30, 10]         # 30 train / 10 val per class for Pavia University
+  split_samples_overrides:
+    Indian_Pines: [10, 5]         # Indian Pines has some small classes
+  split_ratios: null
+  random_state: 42
+  seeds: [1, 2, 3]               # 3 seeded runs -> genuine Mean ± Std
+  print_stats: True
+
+preprocessing:
+  dim_reduction_method: pca
+  num_pca_bands: 30
+  maxpool_kernel: 2
+  use_channel_dim: True
+  band_indices: null
+
+training:
+  num_epochs: 80                 # 80 epochs with early-stopping patience 12
+  num_runs: 3                    # 3 runs per model
+  batch_size: 64                 # Optimal for T4 GPU
+  learning_rate: 0.001
+  optimizer: "adam"
+  optimizer_params: {}
+  patience: 12                   # Early stops once converged
+  checkpoint_interval: 10
+  num_workers: 2
+
+device:
+  use_cuda: True
+  cuda_device: 0
+
+visualization:
+  generate_maps: True
+  mode: "labeled_only"
+  use_spy_colors: True
+  block_background: True
+  show_colorbar: False
+  dpi: 300
+
+map_arrangement:
+  enabled: True
+  preset: "paper"
+  base_output_dir: "Results/Minor_Project_Main"
+  all_datasets: True
+  all_models: True
+  map_type: ["best"]
+  metric: ["OA"]
+  visualization:
+    mode: "labeled_only"
+    use_spy_colors: True
+    block_background: True
+    include_legend: False
+  layout:
+    figure_width: 7.16
+    gap: 3
+
+score_arrangement:
+  all_datasets: True
+  all_models: True
+  models: []
+  use_mean: True
+
