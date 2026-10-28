@@ -1,19 +1,19 @@
 # 🛰️ Hyperspectral Image Classification: MMFormer vs. R2Mamba (2026)
 
-> **Minor Project** — Department of Computer Science & Engineering  
+> **Minor Project** — Department of Information Technology  
 > A comparative study evaluating state-of-the-art **2026 Vision Transformer** vs. **2026 State Space Mamba** architectures for remote sensing hyperspectral classification.
 
 ---
 
 ## 👥 Project Team
 
-| Name | Role | GitHub |
-|---|---|---|
-| **Prince Prajapati** (Team Lead) | Model Training, Pipeline, Notebooks & Experiments | [@lPrincel](https://github.com/lPrincel) |
-| *Ayush Bansal* | Research Methodology & Project Report | *[@username]* |
-| *Abhay Kaushal* | Data Visualization, Slides & Presentation | *[@username]* |
+| Name | Roll No. | GitHub |
+|---|:---:|---|
+| **Prince Prajapati** | 24124085 | [@lPrincel](https://github.com/lPrincel) |
+| **Ayush Bansal** | 24124025 | |
+| **Abhay Kaushal** | 24124003 | |
 
-**Academic Guide:** *Nitika Nigam*, Department of IT
+**Academic Guide:** Dr. Nitika Nigam, Department of Information Technology
 
 ---
 

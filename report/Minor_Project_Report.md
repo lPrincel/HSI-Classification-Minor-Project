@@ -1,16 +1,16 @@
 # Benchmarking Modern Vision Transformers against Selective State Space Models for Remote Sensing Hyperspectral Image Classification
 
 **A Minor Project Report**  
-*Submitted in partial fulfillment of the requirements for the Degree of Bachelor of Technology in Computer Science and Engineering*
+*Submitted in partial fulfillment of the requirements for the Degree of Bachelor of Technology in Information Technology*
 
 ---
 
 ### **Project Team**
-- **Prince Prajapati** (Team Lead) — *Roll No. / Enrollment No.*
-- **[Teammate 2 Name]** — *Roll No. / Enrollment No.*
-- **[Teammate 3 Name]** — *Roll No. / Enrollment No.*
+- **Prince Prajapati** — *Roll No. 24124085*
+- **Ayush Bansal** — *Roll No. 24124025*
+- **Abhay Kaushal** — *Roll No. 24124003*
 
-**Project Guide / Supervisor:** Prof. [Supervisor Name], Department of Computer Science & Engineering  
+**Project Guide / Supervisor:** Dr. Nitika Nigam, Department of Information Technology  
 **Institution:** [Institution / College Name]  
 **Academic Year:** 2025–2026
 
@@ -217,3 +217,4 @@ The modular framework developed in this project provides a foundation for severa
 7. **PyTorch:** A. Paszke et al., *"PyTorch: An Imperative Style, High-Performance Deep Learning Library,"* in *Advances in Neural Information Processing Systems (NeurIPS)*, vol. 32, 2019.
 8. **Indian Pines Benchmark:** Purdue University / NASA Jet Propulsion Laboratory (JPL) AVIRIS Sensor Dataset.
 9. **Pavia University Benchmark:** DLR / University of Pavia ROSIS Sensor Optical Benchmark Dataset.
+
