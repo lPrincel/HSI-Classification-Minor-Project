@@ -133,3 +133,4 @@ python main.py config/project_main.yaml --arrange-only
 2. **R2Mamba (2026):** Xun Shang et al., *"Route-Reliability Mamba for Hyperspectral Image Classification"*, IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing (JSTARS), 2026. [DOI: 10.1109/JSTARS.2026.3728152](https://doi.org/10.1109/JSTARS.2026.3728152)
 3. **Framework Reference:** Tanishq Rachamalla et al., *"A PyTorch Library for Hyperspectral Image Models: Technical Report"*, arXiv:2609.39871, 2026.
 4. **Benchmark Datasets:** NASA JPL/AVIRIS (Indian Pines) and DLR/ROSIS (Pavia University).
+
