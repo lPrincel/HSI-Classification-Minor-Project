@@ -10,8 +10,8 @@
 | Name | Roll No. | GitHub |
 |---|:---:|---|
 | **Prince Prajapati** | 24124085 | [@lPrincel](https://github.com/lPrincel) |
-| **Ayush Bansal** | 24124025 | |
-| **Abhay Kaushal** | 24124003 | |
+| **Ayush Bansal** | 24124025 | [@AYUSH-BANSAL-IT](https://github.com/AYUSH-BANSAL-IT) |
+| **Abhay Kaushal** | 24124003 | [@Abhaykit24](https://github.com/Abhaykit24) |
 
 **Academic Guide:** Dr. Nitika Nigam, Department of Information Technology
 
